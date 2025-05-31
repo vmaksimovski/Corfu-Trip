@@ -87,6 +87,25 @@
             justify-content: space-between;
         }
         
+        .destination.active:hover {
+            transform: translateY(-50%) scale(0.92);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+        
+        .destination.active .google-maps-hint {
+            opacity: 0.7 !important;
+            transition: opacity 0.3s ease;
+        }
+        
+        .destination.active:hover .google-maps-hint {
+            opacity: 1 !important;
+        }
+        
+        .google-maps-hint:hover {
+            text-decoration: underline !important;
+            transform: translateY(-1px);
+        }
+        
         .destination.active[data-country="Greece"] {
             border-color: #0066cc;
         }
@@ -386,6 +405,7 @@
                         <div class="destination-header">
                             <h3>${dest.name}</h3>
                             <p class="country">${dest.country} • ${dest.day} • ${dest.time}</p>
+                            <a class="google-maps-hint" href="https://www.google.com/maps/place/${dest.coordinates[1]},+${dest.coordinates[0]}" target="_blank" style="font-size: 12px; opacity: 0; margin-top: 8px; color: #3498db; text-decoration: none; display: inline-block;">📍 Click to open in Google Maps</a>
                         </div>
                         <div class="description">${dest.description}</div>
                         <div class="navigation">
@@ -398,8 +418,8 @@
                     `;
                     
                     div.addEventListener('click', (e) => {
-                        // Don't trigger if clicking on navigation buttons or if this is already the active destination
-                        if (!e.target.classList.contains('nav-button') && !div.classList.contains('active')) {
+                        // Don't trigger if clicking on navigation buttons or links
+                        if (!e.target.classList.contains('nav-button') && !e.target.classList.contains('google-maps-hint') && !div.classList.contains('active')) {
                             setActiveDestination(index);
                         }
                     });
