@@ -1,12 +1,12 @@
 {
-  "activities": [
+  "activities":[
     {
       "day": "2025-06-05",
       "time": "9:00AM",
-      "lat": 39.6077,
-      "long": 19.9149,
-      "title": "Arrive at Corfu International Airport",
-      "description": "Begin your Mediterranean adventure arriving at Corfu's main airport"
+      "lat": 39.6250,
+      "long": 19.9250,
+      "title": "Arrive at the Corfu Ferry Port",
+      "description": "Begin your Mediterranean adventure arriving at Corfu's ferry terminal"
     },
     {
       "day": "2025-06-05",
@@ -59,16 +59,16 @@
     {
       "day": "2025-06-06",
       "time": "5:30PM",
-      "lat": 39.6833,
-      "long": 19.8167,
+      "lat": 39.6877459,
+      "long": 19.7312354,
       "title": "Doukades Village Visit",
       "description": "Experience authentic mountain village life with coffee at the village square"
     },
     {
       "day": "2025-06-06",
       "time": "8:30PM",
-      "lat": 39.6242,
-      "long": 19.9220,
+      "lat": 39.518297,
+      "long": 19.9212267,
       "title": "Dinner at Taverna Ninos",
       "description": "Authentic local dining with famous pastitsada where Corfiots eat"
     },
@@ -107,8 +107,8 @@
     {
       "day": "2025-06-07",
       "time": "7:45PM",
-      "lat": 39.7917,
-      "long": 19.6633,
+      "lat": 39.7875994,
+      "long": 19.6646544,
       "title": "Sunset at 7th Heaven Cafe",
       "description": "Best sunset spot in Corfu with cocktails on cliff-edge terrace at Loggas Beach"
     },
@@ -131,58 +131,50 @@
     {
       "day": "2025-06-08",
       "time": "1:00PM",
-      "lat": 39.7833,
-      "long": 19.6500,
+      "lat": 39.7959293,
+      "long": 19.6729477,
       "title": "Cape Drastis Visit",
       "description": "Dramatic white cliffs meeting turquoise sea - perfect for photos"
     },
     {
       "day": "2025-06-08",
       "time": "4:30PM",
-      "lat": 39.7600,
-      "long": 19.7067,
+      "lat": 39.7960278,
+      "long": 19.6998333,
       "title": "Canal d'Amour Swimming",
       "description": "Swim through Channel of Love's unique sandstone formations"
     },
     {
       "day": "2025-06-08",
       "time": "8:00PM",
-      "lat": 39.6650,
-      "long": 19.6967,
+      "lat": 39.7379607,
+      "long": 19.6481038,
       "title": "Dinner at Yialos Restaurant",
       "description": "Romantic beachfront dining with fresh fish platter and sunset views"
     },
     {
       "day": "2025-06-09",
       "time": "10:30AM",
-      "lat": 39.6378,
-      "long": 19.9514,
+      "lat": 39.7366944,
+      "long": 19.9302500,
       "title": "Agni Bay Arrival",
       "description": "Visit one of Corfu's most exclusive spots with crystal-clear waters"
     },
     {
       "day": "2025-06-09",
       "time": "1:00PM",
-      "lat": 39.6378,
-      "long": 19.9514,
+      "lat": 39.7361626,
+      "long": 19.9275204,
       "title": "Lunch at Toula's Taverna",
       "description": "Splurge on impeccable seafood where luxury yacht owners dine"
     },
     {
       "day": "2025-06-09",
       "time": "3:00PM",
-      "lat": 39.7478,
-      "long": 19.9236,
+      "lat": 39.7887500,
+      "long": 19.9203333,
       "title": "Kassiopi Village Exploration",
       "description": "Explore charming fishing village and castle ruins with secret beach pathway"
-    },
-    {
-      "day": "2025-06-09",
-      "time": "7:30PM",
-      "lat": 39.5800,
-      "long": 19.8500,
-      "title": "Farewell Dinner at Etrusco",
-      "description": "Michelin-level tasting menu at Corfu's most romantic fine dining restaurant"
     },
     {
       "day": "2025-06-10",
@@ -195,9 +187,9 @@
     {
       "day": "2025-06-10",
       "time": "9:30AM",
-      "lat": 39.6250,
-      "long": 19.9250,
-      "title": "Ferry Departure to Sarande",
+      "lat": 39.7482,
+      "long": 19.9592,
+      "title": "Ferry Departure to Sarandë",
       "description": "30-minute scenic ferry crossing with beautiful coastal views"
     },
     {
@@ -205,7 +197,7 @@
       "time": "10:00AM",
       "lat": 39.8714,
       "long": 20.0034,
-      "title": "Arrive Sarande Ferry Terminal",
+      "title": "Arrive Sarandë Ferry Terminal",
       "description": "Welcome to Albania - exchange euros and begin Albanian Riviera adventure"
     },
     {
@@ -221,7 +213,7 @@
       "time": "2:00PM",
       "lat": 39.8756,
       "long": 20.0053,
-      "title": "Sarande Waterfront Promenade",
+      "title": "Sarandë Waterfront Promenade",
       "description": "Explore palm-lined seaside walk and visit old synagogue ruins"
     },
     {
@@ -230,7 +222,7 @@
       "lat": 39.8659,
       "long": 20.0256,
       "title": "Lëkurës Castle Sunset",
-      "description": "Drive to hilltop castle for panoramic views over Sarande Bay"
+      "description": "Drive to hilltop castle for panoramic views over Sarandë Bay"
     },
     {
       "day": "2025-06-10",
@@ -291,10 +283,10 @@
     {
       "day": "2025-06-13",
       "time": "9:00AM",
-      "lat": 39.6077,
-      "long": 19.9149,
-      "title": "Departure from Corfu Airport",
-      "description": "End of Mediterranean adventure with transfer to airport"
+      "lat": 41.7566117,
+      "long": 22.1918286,
+      "title": "Shtip",
+      "description": "End Mediterranean adventure in historic Macedonian city"
     }
   ]
 }
