@@ -1,0 +1,15 @@
+{
+  "name": "balkans-3d-map-tests",
+  "version": "1.0.0",
+  "description": "Playwright tests for 3D Interactive Balkans Map",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "http-server": "^14.1.1"
+  }
+}

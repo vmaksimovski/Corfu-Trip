@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Interactive Balkans Map</title>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <script src="https://unpkg.com/three@0.106.2/build/three.min.js"></script>
+    <script src="https://unpkg.com/threebox-plugin@2.2.7/dist/threebox.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #sidebar {
+            width: 300px;
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+        }
+
+        #sidebar h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .destination {
+            background: #34495e;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .destination:hover {
+            background: #3498db;
+            transform: translateX(5px);
+            border-color: #2980b9;
+        }
+
+        .destination h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .destination p {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        #map {
+            flex: 1;
+            position: relative;
+        }
+
+        .mapboxgl-popup {
+            max-width: 200px;
+        }
+
+        .mapboxgl-popup-content {
+            text-align: center;
+            font-family: 'Arial', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div id="sidebar">
+        <h1>Top 10 Balkan Destinations</h1>
+        <div id="destinations"></div>
+    </div>
+    <div id="map"></div>
+
+    <script>
+        // Mapbox access token from .env file
+        mapboxgl.accessToken = 'pk.eyJ1Ijoidm1ha3NpbW92c2tpIiwiYSI6ImNtYmNwZzlkNDExNW0ybm9sODd4eXVzZTEifQ.uLOwTgP6Z_3OvlOrGKJt3Q';
+
+        // Top 10 tourist destinations in the Balkans
+        const destinations = [
+            {
+                name: "Dubrovnik",
+                country: "Croatia",
+                coordinates: [18.0944, 42.6507],
+                description: "Pearl of the Adriatic"
+            },
+            {
+                name: "Santorini",
+                country: "Greece",
+                coordinates: [25.4615, 36.3932],
+                description: "Iconic Greek island"
+            },
+            {
+                name: "Belgrade",
+                country: "Serbia",
+                coordinates: [20.4489, 44.7866],
+                description: "Vibrant capital city"
+            },
+            {
+                name: "Mostar",
+                country: "Bosnia and Herzegovina",
+                coordinates: [17.8081, 43.3438],
+                description: "Historic bridge town"
+            },
+            {
+                name: "Kotor",
+                country: "Montenegro",
+                coordinates: [18.7712, 42.4247],
+                description: "Medieval coastal gem"
+            },
+            {
+                name: "Athens",
+                country: "Greece",
+                coordinates: [23.7275, 37.9838],
+                description: "Ancient civilization cradle"
+            },
+            {
+                name: "Plitvice Lakes",
+                country: "Croatia",
+                coordinates: [15.6213, 44.8654],
+                description: "Natural wonderland"
+            },
+            {
+                name: "Ohrid",
+                country: "North Macedonia",
+                coordinates: [20.8019, 41.1171],
+                description: "UNESCO heritage site"
+            },
+            {
+                name: "Sarajevo",
+                country: "Bosnia and Herzegovina",
+                coordinates: [18.4131, 43.8563],
+                description: "Cultural crossroads"
+            },
+            {
+                name: "Corfu",
+                country: "Greece",
+                coordinates: [19.9242, 39.6243],
+                description: "Emerald island paradise"
+            }
+        ];
+
+        // Initialize map
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/satellite-v9',
+            center: [20.0, 42.0], // Center of Balkans
+            zoom: 5.5,
+            pitch: 45,
+            bearing: 0,
+            antialias: true
+        });
+
+        // Make map accessible globally for testing
+        window.map = map;
+
+        // Initialize Threebox
+        let tb;
+        
+        map.on('load', function () {
+            // Add 3D terrain
+            map.addSource('mapbox-dem', {
+                'type': 'raster-dem',
+                'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
+                'tileSize': 512,
+                'maxzoom': 14
+            });
+            
+            map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
+            
+            // Add sky layer
+            map.addLayer({
+                'id': 'sky',
+                'type': 'sky',
+                'paint': {
+                    'sky-type': 'atmosphere',
+                    'sky-atmosphere-sun': [0.0, 0.0],
+                    'sky-atmosphere-sun-intensity': 15
+                }
+            });
+
+            // Initialize Threebox
+            tb = window.Threebox(
+                map,
+                map.getCanvas().getContext('webgl'),
+                {
+                    defaultLights: true
+                }
+            );
+
+            // Add 3D markers for each destination
+            map.addLayer({
+                id: 'custom-3d-layer',
+                type: 'custom',
+                renderingMode: '3d',
+                onAdd: function (map, mbxContext) {
+                    destinations.forEach((dest, index) => {
+                        // Create 3D marker
+                        const scale = 0.5;
+                        const geometry = new THREE.ConeGeometry(5000, 15000, 8);
+                        const material = new THREE.MeshPhongMaterial({ 
+                            color: 0x3498db,
+                            emissive: 0x2980b9,
+                            emissiveIntensity: 0.3
+                        });
+                        
+                        const cone = new THREE.Mesh(geometry, material);
+                        cone.rotation.x = Math.PI;
+                        
+                        const marker = tb.Object3D({
+                            obj: cone,
+                            units: 'meters',
+                            anchor: 'bottom'
+                        });
+                        
+                        marker.setCoords([dest.coordinates[0], dest.coordinates[1]]);
+                        tb.add(marker);
+                    });
+                },
+                
+                render: function (gl, matrix) {
+                    tb.update();
+                }
+            });
+        });
+
+        // Create destination list in sidebar
+        function createDestinationList() {
+            const container = document.getElementById('destinations');
+            
+            destinations.forEach((dest, index) => {
+                const div = document.createElement('div');
+                div.className = 'destination';
+                div.innerHTML = `
+                    <h3>${index + 1}. ${dest.name}</h3>
+                    <p>${dest.country} - ${dest.description}</p>
+                `;
+                
+                div.addEventListener('click', () => flyToDestination(dest));
+                container.appendChild(div);
+            });
+        }
+
+        // Fly to destination function
+        function flyToDestination(destination) {
+            map.flyTo({
+                center: destination.coordinates,
+                zoom: 12,
+                pitch: 60,
+                bearing: Math.random() * 360,
+                duration: 3000,
+                essential: true
+            });
+
+            // Show popup
+            setTimeout(() => {
+                new mapboxgl.Popup()
+                    .setLngLat(destination.coordinates)
+                    .setHTML(`
+                        <h3>${destination.name}</h3>
+                        <p>${destination.country}</p>
+                        <p><em>${destination.description}</em></p>
+                    `)
+                    .addTo(map);
+            }, 3000);
+        }
+
+        // Add navigation controls
+        map.addControl(new mapboxgl.NavigationControl());
+        map.addControl(new mapboxgl.FullscreenControl());
+
+        // Create the destination list immediately
+        createDestinationList();
+
+        // Add markers for each destination
+        destinations.forEach(dest => {
+            const el = document.createElement('div');
+            el.style.width = '30px';
+            el.style.height = '30px';
+            el.style.backgroundColor = '#3498db';
+            el.style.borderRadius = '50%';
+            el.style.border = '3px solid white';
+            el.style.cursor = 'pointer';
+            el.style.boxShadow = '0 2px 5px rgba(0,0,0,0.3)';
+
+            new mapboxgl.Marker(el)
+                .setLngLat(dest.coordinates)
+                .addTo(map);
+
+            el.addEventListener('click', () => flyToDestination(dest));
+        });
+    </script>
+</body>
+</html>
