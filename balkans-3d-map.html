@@ -92,6 +92,10 @@
         .destination.active[data-country="Albania"] {
             border-color: #e41e20;
         }
+        
+        .destination.active[data-country="Macedonia"] {
+            border-color: #FFD700;
+        }
 
         .destination.next {
             bottom: -10%;
@@ -123,7 +127,6 @@
         .destination .description {
             font-size: 20px;
             line-height: 1.6;
-            opacity: 0.9;
             flex: 1;
             overflow-y: auto;
             margin: 20px 0;
@@ -196,6 +199,12 @@
         .mapboxgl-popup-content {
             text-align: center;
             font-family: 'Arial', sans-serif;
+            background-color: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(5px);
+        }
+
+        .mapboxgl-popup-tip {
+            border-top-color: rgba(255, 255, 255, 0.9);
         }
     </style>
 </head>
@@ -222,8 +231,8 @@
                         "time": "9:00AM",
                         "lat": 39.6077,
                         "long": 19.9149,
-                        "title": "Arrive at Corfu International Airport",
-                        "description": "Begin your Mediterranean adventure arriving at Corfu's main airport"
+                        "title": "Arrive at the Corfu Ferry Port",
+                        "description": "Begin your Mediterranean adventure arriving at Corfu's ferry terminal"
                     },
                     {
                         "day": "2025-06-05",
@@ -276,16 +285,16 @@
                     {
                         "day": "2025-06-06",
                         "time": "5:30PM",
-                        "lat": 39.6833,
-                        "long": 19.8167,
+                        "lat": 39.6877459,
+                        "long": 19.7312354,
                         "title": "Doukades Village Visit",
                         "description": "Experience authentic mountain village life with coffee at the village square"
                     },
                     {
                         "day": "2025-06-06",
                         "time": "8:30PM",
-                        "lat": 39.6242,
-                        "long": 19.9220,
+                        "lat": 39.518297,
+                        "long": 19.9212267,
                         "title": "Dinner at Taverna Ninos",
                         "description": "Authentic local dining with famous pastitsada where Corfiots eat"
                     },
@@ -324,8 +333,8 @@
                     {
                         "day": "2025-06-07",
                         "time": "7:45PM",
-                        "lat": 39.7917,
-                        "long": 19.6633,
+                        "lat": 39.7875994,
+                        "long": 19.6646544,
                         "title": "Sunset at 7th Heaven Cafe",
                         "description": "Best sunset spot in Corfu with cocktails on cliff-edge terrace at Loggas Beach"
                     },
@@ -348,58 +357,50 @@
                     {
                         "day": "2025-06-08",
                         "time": "1:00PM",
-                        "lat": 39.7833,
-                        "long": 19.6500,
+                        "lat": 39.7959293,
+                        "long": 19.6729477,
                         "title": "Cape Drastis Visit",
                         "description": "Dramatic white cliffs meeting turquoise sea - perfect for photos"
                     },
                     {
                         "day": "2025-06-08",
                         "time": "4:30PM",
-                        "lat": 39.7600,
-                        "long": 19.7067,
+                        "lat": 39.7960278,
+                        "long": 19.6998333,
                         "title": "Canal d'Amour Swimming",
                         "description": "Swim through Channel of Love's unique sandstone formations"
                     },
                     {
                         "day": "2025-06-08",
                         "time": "8:00PM",
-                        "lat": 39.6650,
-                        "long": 19.6967,
+                        "lat": 39.7379607,
+                        "long": 19.6481038,
                         "title": "Dinner at Yialos Restaurant",
                         "description": "Romantic beachfront dining with fresh fish platter and sunset views"
                     },
                     {
                         "day": "2025-06-09",
                         "time": "10:30AM",
-                        "lat": 39.6378,
-                        "long": 19.9514,
+                        "lat": 39.7366944,
+                        "long": 19.9302500,
                         "title": "Agni Bay Arrival",
                         "description": "Visit one of Corfu's most exclusive spots with crystal-clear waters"
                     },
                     {
                         "day": "2025-06-09",
                         "time": "1:00PM",
-                        "lat": 39.6378,
-                        "long": 19.9514,
+                        "lat": 39.7361626,
+                        "long": 19.9275204,
                         "title": "Lunch at Toula's Taverna",
                         "description": "Splurge on impeccable seafood where luxury yacht owners dine"
                     },
                     {
                         "day": "2025-06-09",
                         "time": "3:00PM",
-                        "lat": 39.7478,
-                        "long": 19.9236,
+                        "lat": 39.7887500,
+                        "long": 19.9203333,
                         "title": "Kassiopi Village Exploration",
                         "description": "Explore charming fishing village and castle ruins with secret beach pathway"
-                    },
-                    {
-                        "day": "2025-06-09",
-                        "time": "7:30PM",
-                        "lat": 39.5800,
-                        "long": 19.8500,
-                        "title": "Farewell Dinner at Etrusco",
-                        "description": "Michelin-level tasting menu at Corfu's most romantic fine dining restaurant"
                     },
                     {
                         "day": "2025-06-10",
@@ -412,8 +413,8 @@
                     {
                         "day": "2025-06-10",
                         "time": "9:30AM",
-                        "lat": 39.6250,
-                        "long": 19.9250,
+                        "lat": 39.7482,
+                        "long": 19.9592,
                         "title": "Ferry Departure to Sarandë",
                         "description": "30-minute scenic ferry crossing with beautiful coastal views"
                     },
@@ -508,10 +509,10 @@
                     {
                         "day": "2025-06-13",
                         "time": "9:00AM",
-                        "lat": 39.6077,
-                        "long": 19.9149,
-                        "title": "Departure from Corfu Airport",
-                        "description": "End of Mediterranean adventure with transfer to airport"
+                        "lat": 41.7566117,
+                        "long": 22.1918286,
+                        "title": "Shtip",
+                        "description": "End Mediterranean adventure in historic Macedonian city"
                     }
                 ]
             };
@@ -537,8 +538,24 @@
                 const date = new Date(activity.day);
                 const dayOfTrip = Math.floor((date - new Date('2025-06-05')) / (1000 * 60 * 60 * 24)) + 1;
                 // More accurate country detection based on actual locations
-                // Sarandë activities have lat >= 39.745 (Butrint), Corfu activities have lat < 39.745
-                const country = activity.lat >= 39.745 ? "Albania" : "Greece";
+                // Albania locations include: Sarandë, Butrint, Ksamil, Lëkurës Castle
+                const albaniaLocations = [
+                    "Arrive Sarandë Ferry Terminal",
+                    "Te Bequa",
+                    "Sarandë Waterfront Promenade",
+                    "Lëkurës Castle Sunset",
+                    "Dinner at Natyra Restaurant",
+                    "Natyra Restaurant",
+                    "Butrint UNESCO World Heritage Site",
+                    "Paradise at Ksamil Beach",
+                    "Haxhi Restaurant",
+                    "Rei dos Mares Boat Tour",
+                    "Final Dinner at Meat House",
+                    "Meat House",
+                    "Evening Ferry to Corfu"
+                ];
+                const country = activity.title === "Shtip" ? "Macedonia" : 
+                               albaniaLocations.includes(activity.title) ? "Albania" : "Greece";
                 
                 return {
                     name: activity.title,
@@ -609,8 +626,10 @@
                             // Create 3D marker
                             const scale = 0.5;
                             const geometry = new THREE.ConeGeometry(5000, 15000, 8);
-                            const markerColor = dest.country === 'Greece' ? 0x0066cc : 0xe41e20;
-                            const emissiveColor = dest.country === 'Greece' ? 0x004499 : 0xcc1a1c;
+                            const markerColor = dest.country === 'Greece' ? 0x0066cc : 
+                                              dest.country === 'Macedonia' ? 0xFFD700 : 0xe41e20;
+                            const emissiveColor = dest.country === 'Greece' ? 0x004499 : 
+                                                dest.country === 'Macedonia' ? 0xFFA500 : 0xcc1a1c;
                             const material = new THREE.MeshPhongMaterial({ 
                                 color: markerColor,
                                 emissive: emissiveColor,
@@ -666,8 +685,8 @@
                     `;
                     
                     div.addEventListener('click', (e) => {
-                        // Don't trigger if clicking on navigation buttons
-                        if (!e.target.classList.contains('nav-button')) {
+                        // Don't trigger if clicking on navigation buttons or if this is already the active destination
+                        if (!e.target.classList.contains('nav-button') && !div.classList.contains('active')) {
                             setActiveDestination(index);
                         }
                     });
@@ -772,7 +791,8 @@
                 const el = document.createElement('div');
                 el.style.width = '30px';
                 el.style.height = '30px';
-                el.style.backgroundColor = dest.country === 'Greece' ? '#0066cc' : '#e41e20';
+                el.style.backgroundColor = dest.country === 'Greece' ? '#0066cc' : 
+                                          dest.country === 'Macedonia' ? '#FFD700' : '#e41e20';
                 el.style.borderRadius = '50%';
                 el.style.border = '3px solid white';
                 el.style.cursor = 'pointer';
