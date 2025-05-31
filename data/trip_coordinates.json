@@ -59,8 +59,8 @@
     {
       "day": "2025-06-06",
       "time": "5:30PM",
-      "lat": 39.6877459,
-      "long": 19.7312354,
+      "lat": 39.68775444873469,
+      "long": 19.74052667844296,
       "title": "Doukades Village Visit",
       "description": "Experience authentic mountain village life with coffee at the village square"
     },
@@ -75,16 +75,16 @@
     {
       "day": "2025-06-07",
       "time": "10:30AM",
-      "lat": 39.6695,
-      "long": 19.7015,
+      "lat": 39.66955831971878,
+      "long": 19.701728213044873,
       "title": "Paleokastritsa Monastery",
       "description": "Visit 13th-century monastery with beautiful gardens and icon museum"
     },
     {
       "day": "2025-06-07",
       "time": "12:00PM",
-      "lat": 39.6667,
-      "long": 19.7000,
+      "lat": 39.67219640040307,
+      "long": 19.70325926065345,
       "title": "Beach Time at Paleokastritsa",
       "description": "Swim in crystal-clear turquoise waters at main beach with sunbed rental"
     },
@@ -99,24 +99,24 @@
     {
       "day": "2025-06-07",
       "time": "3:00PM",
-      "lat": 39.6667,
-      "long": 19.7000,
+      "lat": 39.67081887842845,
+      "long": 19.702528742911944,
       "title": "Boat Trip to Sea Caves",
       "description": "Explore hidden caves and swim in secluded coves around Paleokastritsa"
     },
     {
       "day": "2025-06-07",
       "time": "7:45PM",
-      "lat": 39.7875994,
-      "long": 19.6646544,
+      "lat": 39.78763641956003,
+      "long": 19.667250740775323,
       "title": "Sunset at 7th Heaven Cafe",
       "description": "Best sunset spot in Corfu with cocktails on cliff-edge terrace at Loggas Beach"
     },
     {
       "day": "2025-06-08",
       "time": "8:30AM",
-      "lat": 39.7150,
-      "long": 19.6575,
+      "lat": 39.71528120678032,
+      "long": 19.658063358255063,
       "title": "Hike to Porto Timoni Beach",
       "description": "45-minute scenic hike to Corfu's most photographed double bay beach"
     },
@@ -147,32 +147,32 @@
     {
       "day": "2025-06-08",
       "time": "8:00PM",
-      "lat": 39.7379607,
-      "long": 19.6481038,
+      "lat": 39.7935834107572,
+      "long": 19.740271298888224,
       "title": "Dinner at Yialos Restaurant",
       "description": "Romantic beachfront dining with fresh fish platter and sunset views"
     },
     {
       "day": "2025-06-09",
       "time": "10:30AM",
-      "lat": 39.7366944,
-      "long": 19.9302500,
+      "lat": 39.736848399274315,
+      "long": 19.929099295773543,
       "title": "Agni Bay Arrival",
       "description": "Visit one of Corfu's most exclusive spots with crystal-clear waters"
     },
     {
       "day": "2025-06-09",
       "time": "1:00PM",
-      "lat": 39.7361626,
-      "long": 19.9275204,
+      "lat": 39.73617959333126,
+      "long": 19.929307392585464,
       "title": "Lunch at Toula's Taverna",
       "description": "Splurge on impeccable seafood where luxury yacht owners dine"
     },
     {
       "day": "2025-06-09",
       "time": "3:00PM",
-      "lat": 39.7887500,
-      "long": 19.9203333,
+      "lat": 39.78847798486937,
+      "long": 19.921620740030395,
       "title": "Kassiopi Village Exploration",
       "description": "Explore charming fishing village and castle ruins with secret beach pathway"
     },
@@ -275,10 +275,10 @@
     {
       "day": "2025-06-12",
       "time": "8:00PM",
-      "lat": 39.8714,
-      "long": 20.0034,
-      "title": "Evening Ferry to Corfu",
-      "description": "Return ferry journey with sunset views from deck"
+      "lat": 40.880702928932244,
+      "long": 20.926371669507756,
+      "title": "Evening Bus to Macedonia",
+      "description": "Return bus as the sun sets"
     },
     {
       "day": "2025-06-13",
