@@ -136,8 +136,23 @@
 
         .destination.active .navigation {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
+            margin-top: 20px;
+        }
+
+        .nav-info {
+            font-size: 14px;
+            opacity: 0.7;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            gap: 20px;
         }
 
         .nav-button {
@@ -167,11 +182,6 @@
             background: #3498db;
             transform: none;
             box-shadow: none;
-        }
-
-        .nav-info {
-            font-size: 14px;
-            opacity: 0.7;
         }
 
         #map {
@@ -647,8 +657,8 @@
                         </div>
                         <div class="description">${dest.description}</div>
                         <div class="navigation">
-                            <div class="nav-info" style="text-align: center; margin-bottom: 15px;">${index + 1} of ${destinations.length}</div>
-                            <div style="display: flex; justify-content: space-between; gap: 20px;">
+                            <div class="nav-info">${index + 1} of ${destinations.length}</div>
+                            <div class="nav-buttons">
                                 <button class="nav-button" onclick="navigateDestination(-1)" ${index === 0 ? 'disabled' : ''}>Previous</button>
                                 <button class="nav-button" onclick="navigateDestination(1)" ${index === destinations.length - 1 ? 'disabled' : ''}>Next</button>
                             </div>
