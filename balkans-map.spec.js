@@ -13,7 +13,7 @@ test.describe('3D Interactive Balkans Map', () => {
     await page.waitForFunction(() => {
       return window.mapboxgl && 
              document.querySelector('.mapboxgl-map') && 
-             document.querySelectorAll('.destination').length === 10;
+             document.querySelectorAll('.destination').length === 37;
     }, { timeout: 10000 });
   });
 
@@ -30,25 +30,25 @@ test.describe('3D Interactive Balkans Map', () => {
     await expect(sidebar).toBeVisible();
     
     const heading = await page.locator('#sidebar h1');
-    await expect(heading).toHaveText('Top 10 Balkan Destinations');
+    await expect(heading).toHaveText('Corfu & Sarande Trip Itinerary');
   });
 
-  test('should display all 10 destinations in sidebar', async () => {
+  test('should display all 37 destinations in sidebar', async () => {
     const destinations = await page.locator('.destination');
-    await expect(destinations).toHaveCount(10);
+    await expect(destinations).toHaveCount(37);
     
     // Check specific destinations
     const expectedDestinations = [
-      'Dubrovnik',
-      'Santorini',
-      'Belgrade',
-      'Mostar',
-      'Kotor',
-      'Athens',
-      'Plitvice Lakes',
-      'Ohrid',
-      'Sarajevo',
-      'Corfu'
+      'Arrive at Corfu International Airport',
+      'Lunch at Mikro Cafe',
+      'Explore UNESCO Corfu Old Town',
+      'Old Fortress (Palaio Frourio) Sunset',
+      'Dinner at Salto Wine Bar & Bistro',
+      'Achilleion Palace Visit',
+      'Lunch at Limnopoula Fish Taverna',
+      'Doukades Village Visit',
+      'Dinner at Taverna Ninos',
+      'Paleokastritsa Monastery'
     ];
     
     for (let i = 0; i < expectedDestinations.length; i++) {
@@ -115,9 +115,9 @@ test.describe('3D Interactive Balkans Map', () => {
     // Wait for map to be ready
     await page.waitForTimeout(2000);
     
-    // Click on Dubrovnik
-    const dubrovnik = await page.locator('.destination').first();
-    await dubrovnik.click();
+    // Click on first destination
+    const firstDestination = await page.locator('.destination').first();
+    await firstDestination.click();
     
     // Wait for fly animation
     await page.waitForTimeout(4000);
@@ -125,7 +125,7 @@ test.describe('3D Interactive Balkans Map', () => {
     // Check if popup appears
     const popup = await page.locator('.mapboxgl-popup');
     await expect(popup).toBeVisible({ timeout: 5000 });
-    await expect(popup).toContainText('Dubrovnik');
+    await expect(popup).toContainText('Arrive at Corfu International Airport');
   });
 
   test('should display markers on map', async () => {
@@ -135,8 +135,8 @@ test.describe('3D Interactive Balkans Map', () => {
     const markers = await page.locator('.mapboxgl-marker');
     const markerCount = await markers.count();
     
-    // Should have at least 10 markers (one for each destination)
-    expect(markerCount).toBeGreaterThanOrEqual(10);
+    // Should have at least 37 markers (one for each destination)
+    expect(markerCount).toBeGreaterThanOrEqual(37);
   });
 
   test('should have 3D terrain enabled', async () => {
@@ -170,40 +170,47 @@ test.describe('3D Interactive Balkans Map', () => {
   });
 
   test('should display destination details correctly', async () => {
-    const firstDestination = await page.locator('.destination').first();
+    // Wait for the first destination to be active
+    await page.waitForSelector('.destination.active');
+    const activeDestination = await page.locator('.destination.active');
     
     // Check structure
-    const heading = await firstDestination.locator('h3');
-    await expect(heading).toContainText('1. Dubrovnik');
+    const heading = await activeDestination.locator('h3');
+    await expect(heading).toContainText('Arrive at Corfu International Airport');
     
-    const description = await firstDestination.locator('p');
-    await expect(description).toContainText('Croatia');
-    await expect(description).toContainText('Pearl of the Adriatic');
+    const countryInfo = await activeDestination.locator('.country');
+    await expect(countryInfo).toContainText('Greece');
+    await expect(countryInfo).toContainText('Day 1');
+    await expect(countryInfo).toContainText('9:00AM');
+    
+    // Check description is present
+    const description = await activeDestination.locator('.description');
+    await expect(description).toContainText('Begin your Mediterranean adventure');
   });
 
   test('should handle multiple destination clicks', async () => {
     // Click first destination
-    const dubrovnik = await page.locator('.destination').first();
-    await dubrovnik.click();
+    const firstDest = await page.locator('.destination').first();
+    await firstDest.click();
     await page.waitForTimeout(3500);
     
     // Click another destination
-    const santorini = await page.locator('.destination').nth(1);
-    await santorini.click();
+    const secondDest = await page.locator('.destination').nth(1);
+    await secondDest.click();
     await page.waitForTimeout(3500);
     
     // Check if new popup appears
     const popup = await page.locator('.mapboxgl-popup').last();
     await expect(popup).toBeVisible();
-    await expect(popup).toContainText('Santorini');
+    await expect(popup).toContainText('Lunch at Mikro Cafe');
   });
 
   test('should have responsive sidebar', async () => {
     const sidebar = await page.locator('#sidebar');
     const sidebarWidth = await sidebar.evaluate(el => el.offsetWidth);
     
-    // Sidebar should be 300px as defined in CSS
-    expect(sidebarWidth).toBe(300);
+    // Sidebar should be 350px as defined in CSS
+    expect(sidebarWidth).toBe(350);
   });
 
   test('should load Three.js and Threebox libraries', async () => {

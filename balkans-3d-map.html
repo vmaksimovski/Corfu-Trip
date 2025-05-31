@@ -23,12 +23,14 @@
         }
 
         #sidebar {
-            width: 300px;
+            width: 350px;
             background: #2c3e50;
             color: white;
             padding: 20px;
-            overflow-y: auto;
+            overflow: hidden;
             box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
         }
 
         #sidebar h1 {
@@ -37,32 +39,139 @@
             text-align: center;
             border-bottom: 2px solid #3498db;
             padding-bottom: 10px;
+            flex-shrink: 0;
+        }
+
+        #destinations {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         .destination {
+            position: absolute;
+            width: 90%;
             background: #34495e;
-            margin: 10px 0;
-            padding: 15px;
-            border-radius: 8px;
+            padding: 20px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             border: 2px solid transparent;
+            opacity: 0.3;
+            transform: scale(0.8);
         }
 
-        .destination:hover {
-            background: #3498db;
-            transform: translateX(5px);
-            border-color: #2980b9;
+        .destination.previous {
+            top: -10%;
+            opacity: 0.3;
+            transform: scale(0.8);
+            filter: grayscale(50%);
+        }
+
+        .destination.active {
+            top: 50%;
+            transform: translateY(-50%) scale(1);
+            opacity: 1;
+            background: #34495e;
+            border-color: #3498db;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .destination.active[data-country="Greece"] {
+            border-color: #0066cc;
+        }
+        
+        .destination.active[data-country="Albania"] {
+            border-color: #e41e20;
+        }
+
+        .destination.next {
+            bottom: -10%;
+            opacity: 0.3;
+            transform: scale(0.8);
+            filter: grayscale(50%);
+        }
+
+        .destination.hidden {
+            display: none;
+        }
+
+        .destination-header {
+            flex-shrink: 0;
         }
 
         .destination h3 {
-            font-size: 18px;
-            margin-bottom: 5px;
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #3498db;
         }
 
-        .destination p {
-            font-size: 14px;
+        .destination .country {
+            font-size: 16px;
             opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        .destination .description {
+            font-size: 15px;
+            line-height: 1.6;
+            opacity: 0.9;
+            flex: 1;
+            overflow-y: auto;
+            margin: 20px 0;
+        }
+
+        .destination .navigation {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .destination.active .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-button {
+            background: #3498db;
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .nav-button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+        }
+
+        .nav-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .nav-button:disabled:hover {
+            background: #3498db;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .nav-info {
+            font-size: 14px;
+            opacity: 0.7;
         }
 
         #map {
@@ -82,228 +191,270 @@
 </head>
 <body>
     <div id="sidebar">
-        <h1>Top 10 Balkan Destinations</h1>
+        <h1>Corfu & Sarande Trip Itinerary</h1>
         <div id="destinations"></div>
     </div>
     <div id="map"></div>
 
     <script>
-        // Mapbox access token from .env file
+        // Mapbox access token
         mapboxgl.accessToken = 'pk.eyJ1Ijoidm1ha3NpbW92c2tpIiwiYSI6ImNtYmNwZzlkNDExNW0ybm9sODd4eXVzZTEifQ.uLOwTgP6Z_3OvlOrGKJt3Q';
 
-        // Top 10 tourist destinations in the Balkans
-        const destinations = [
-            {
-                name: "Dubrovnik",
-                country: "Croatia",
-                coordinates: [18.0944, 42.6507],
-                description: "Pearl of the Adriatic"
-            },
-            {
-                name: "Santorini",
-                country: "Greece",
-                coordinates: [25.4615, 36.3932],
-                description: "Iconic Greek island"
-            },
-            {
-                name: "Belgrade",
-                country: "Serbia",
-                coordinates: [20.4489, 44.7866],
-                description: "Vibrant capital city"
-            },
-            {
-                name: "Mostar",
-                country: "Bosnia and Herzegovina",
-                coordinates: [17.8081, 43.3438],
-                description: "Historic bridge town"
-            },
-            {
-                name: "Kotor",
-                country: "Montenegro",
-                coordinates: [18.7712, 42.4247],
-                description: "Medieval coastal gem"
-            },
-            {
-                name: "Athens",
-                country: "Greece",
-                coordinates: [23.7275, 37.9838],
-                description: "Ancient civilization cradle"
-            },
-            {
-                name: "Plitvice Lakes",
-                country: "Croatia",
-                coordinates: [15.6213, 44.8654],
-                description: "Natural wonderland"
-            },
-            {
-                name: "Ohrid",
-                country: "North Macedonia",
-                coordinates: [20.8019, 41.1171],
-                description: "UNESCO heritage site"
-            },
-            {
-                name: "Sarajevo",
-                country: "Bosnia and Herzegovina",
-                coordinates: [18.4131, 43.8563],
-                description: "Cultural crossroads"
-            },
-            {
-                name: "Corfu",
-                country: "Greece",
-                coordinates: [19.9242, 39.6243],
-                description: "Emerald island paradise"
-            }
-        ];
+        // Load trip data from the actual trip coordinates
+        // For file:// protocol, we need to handle CORS differently
+        if (window.location.protocol === 'file:') {
+            // For local file access, embed the data directly from trip_coordinates.json
+            const tripData = {"activities":[{"day":"2025-06-05","time":"9:00AM","lat":39.6077,"long":19.9149,"title":"Arrive at Corfu International Airport","description":"Begin your Mediterranean adventure arriving at Corfu's main airport"},{"day":"2025-06-05","time":"12:30PM","lat":39.6243,"long":19.9217,"title":"Lunch at Mikro Cafe","description":"Light lunch with perfect terrace overlooking Old Town's stepped streets"},{"day":"2025-06-05","time":"2:00PM","lat":39.6242,"long":19.9220,"title":"Explore UNESCO Corfu Old Town","description":"Wander through Venetian alleys, visit Liston arcade, and browse artisan shops"},{"day":"2025-06-05","time":"6:30PM","lat":39.6236,"long":19.9294,"title":"Old Fortress (Palaio Frourio) Sunset","description":"Golden hour walk and climb for panoramic sunset views over Corfu"},{"day":"2025-06-05","time":"8:30PM","lat":39.6265,"long":19.9205,"title":"Dinner at Salto Wine Bar & Bistro","description":"Romantic dinner with fresh octopus carpaccio in converted Venetian mansion"},{"day":"2025-06-06","time":"10:30AM","lat":39.5575,"long":19.9025,"title":"Achilleion Palace Visit","description":"Tour Empress Sisi's stunning summer palace with gardens and terrace views"},{"day":"2025-06-06","time":"2:00PM","lat":39.4534,"long":20.0025,"title":"Lunch at Limnopoula Fish Taverna","description":"Legendary fresh grilled fish at Corfu's best-rated seafood restaurant in Petriti"},{"day":"2025-06-06","time":"5:30PM","lat":39.6833,"long":19.8167,"title":"Doukades Village Visit","description":"Experience authentic mountain village life with coffee at the village square"},{"day":"2025-06-06","time":"8:30PM","lat":39.6242,"long":19.9220,"title":"Dinner at Taverna Ninos","description":"Authentic local dining with famous pastitsada where Corfiots eat"},{"day":"2025-06-07","time":"10:30AM","lat":39.6695,"long":19.7015,"title":"Paleokastritsa Monastery","description":"Visit 13th-century monastery with beautiful gardens and icon museum"},{"day":"2025-06-07","time":"12:00PM","lat":39.6667,"long":19.7000,"title":"Beach Time at Paleokastritsa","description":"Swim in crystal-clear turquoise waters at main beach with sunbed rental"},{"day":"2025-06-07","time":"1:30PM","lat":39.6650,"long":19.6983,"title":"Lunch at Dolphin Taverna","description":"Family-run taverna with jaw-dropping bay views, fresh calamari and moussaka"},{"day":"2025-06-07","time":"3:00PM","lat":39.6667,"long":19.7000,"title":"Boat Trip to Sea Caves","description":"Explore hidden caves and swim in secluded coves around Paleokastritsa"},{"day":"2025-06-07","time":"7:45PM","lat":39.7917,"long":19.6633,"title":"Sunset at 7th Heaven Cafe","description":"Best sunset spot in Corfu with cocktails on cliff-edge terrace at Loggas Beach"},{"day":"2025-06-08","time":"8:30AM","lat":39.7150,"long":19.6575,"title":"Hike to Porto Timoni Beach","description":"45-minute scenic hike to Corfu's most photographed double bay beach"},{"day":"2025-06-08","time":"10:00AM","lat":39.7150,"long":19.6575,"title":"Swim at Porto Timoni","description":"Relax and snorkel at the stunning twin bays with picnic lunch"},{"day":"2025-06-08","time":"1:00PM","lat":39.7833,"long":19.6500,"title":"Cape Drastis Visit","description":"Dramatic white cliffs meeting turquoise sea - perfect for photos"},{"day":"2025-06-08","time":"4:30PM","lat":39.7600,"long":19.7067,"title":"Canal d'Amour Swimming","description":"Swim through Channel of Love's unique sandstone formations"},{"day":"2025-06-08","time":"8:00PM","lat":39.6650,"long":19.6967,"title":"Dinner at Yialos Restaurant","description":"Romantic beachfront dining with fresh fish platter and sunset views"},{"day":"2025-06-09","time":"10:30AM","lat":39.6378,"long":19.9514,"title":"Agni Bay Arrival","description":"Visit one of Corfu's most exclusive spots with crystal-clear waters"},{"day":"2025-06-09","time":"1:00PM","lat":39.6378,"long":19.9514,"title":"Lunch at Toula's Taverna","description":"Splurge on impeccable seafood where luxury yacht owners dine"},{"day":"2025-06-09","time":"3:00PM","lat":39.7478,"long":19.9236,"title":"Kassiopi Village Exploration","description":"Explore charming fishing village and castle ruins with secret beach pathway"},{"day":"2025-06-09","time":"7:30PM","lat":39.5800,"long":19.8500,"title":"Farewell Dinner at Etrusco","description":"Michelin-level tasting menu at Corfu's most romantic fine dining restaurant"},{"day":"2025-06-10","time":"8:30AM","lat":39.6250,"long":19.9250,"title":"Corfu Port Ferry Terminal","description":"Check-in for ferry journey to Albania"},{"day":"2025-06-10","time":"9:30AM","lat":39.6250,"long":19.9250,"title":"Ferry Departure to Sarande","description":"30-minute scenic ferry crossing with beautiful coastal views"},{"day":"2025-06-10","time":"10:00AM","lat":39.8714,"long":20.0034,"title":"Arrive Sarande Ferry Terminal","description":"Welcome to Albania - exchange euros and begin Albanian Riviera adventure"},{"day":"2025-06-10","time":"12:30PM","lat":39.8750,"long":20.0050,"title":"Lunch at Te Bequa","description":"Authentic Albanian cuisine with tavë kosi lamb dish where locals eat"},{"day":"2025-06-10","time":"2:00PM","lat":39.8756,"long":20.0053,"title":"Sarande Waterfront Promenade","description":"Explore palm-lined seaside walk and visit old synagogue ruins"},{"day":"2025-06-10","time":"6:00PM","lat":39.8659,"long":20.0256,"title":"Lëkurës Castle Sunset","description":"Drive to hilltop castle for panoramic views over Sarande Bay"},{"day":"2025-06-10","time":"7:30PM","lat":39.8659,"long":20.0256,"title":"Dinner at Natyra Restaurant","description":"Mixed grill platter with Albanian wine at castle restaurant with views"},{"day":"2025-06-11","time":"9:00AM","lat":39.7450,"long":20.0200,"title":"Butrint UNESCO World Heritage Site","description":"Explore 2,500 years of history including Roman theatre and Byzantine mosaics"},{"day":"2025-06-11","time":"2:00PM","lat":39.7689,"long":19.9997,"title":"Paradise at Ksamil Beach","description":"Caribbean-like turquoise waters, swim to small islands nearby"},{"day":"2025-06-11","time":"7:30PM","lat":39.8750,"long":20.0050,"title":"Dinner at Haxhi Restaurant","description":"Famous pink pasta with shrimp and grilled octopus at family-owned spot"},{"day":"2025-06-12","time":"9:00AM","lat":39.8750,"long":20.0050,"title":"Rei dos Mares Boat Tour","description":"Full day exploring hidden beaches with onboard BBQ lunch and wine"},{"day":"2025-06-12","time":"5:00PM","lat":39.8750,"long":20.0050,"title":"Final Dinner at Meat House","description":"Beachfront dining with fresh catch of the day before ferry departure"},{"day":"2025-06-12","time":"8:00PM","lat":39.8714,"long":20.0034,"title":"Evening Ferry to Corfu","description":"Return ferry journey with sunset views from deck"},{"day":"2025-06-13","time":"9:00AM","lat":39.6077,"long":19.9149,"title":"Departure from Corfu Airport","description":"End of Mediterranean adventure with transfer to airport"}]};
+            initializeMap(tripData.activities);
+        } else {
+            // For http(s) protocol, use fetch
+            fetch('./data/trip_coordinates.json')
+                .then(response => response.json())
+                .then(data => {
+                    initializeMap(data.activities);
+                })
+                .catch(error => {
+                    console.error('Error loading trip data:', error);
+                    // Initialize with empty array if file can't be loaded
+                    initializeMap([]);
+                });
+        }
 
-        // Initialize map
-        const map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/mapbox/satellite-v9',
-            center: [20.0, 42.0], // Center of Balkans
-            zoom: 5.5,
-            pitch: 45,
-            bearing: 0,
-            antialias: true
-        });
-
-        // Make map accessible globally for testing
-        window.map = map;
-
-        // Initialize Threebox
-        let tb;
-        
-        map.on('load', function () {
-            // Add 3D terrain
-            map.addSource('mapbox-dem', {
-                'type': 'raster-dem',
-                'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
-                'tileSize': 512,
-                'maxzoom': 14
+        // Main initialization function
+        function initializeMap(tripActivities) {
+            // Convert trip activities to destinations format
+            const destinations = tripActivities.map((activity, index) => {
+                const date = new Date(activity.day);
+                const dayOfTrip = Math.floor((date - new Date('2025-06-05')) / (1000 * 60 * 60 * 24)) + 1;
+                // More accurate country detection based on actual locations
+                // Sarande activities have lat >= 39.745 (Butrint), Corfu activities have lat < 39.745
+                const country = activity.lat >= 39.745 ? "Albania" : "Greece";
+                
+                return {
+                    name: activity.title,
+                    country: country,
+                    coordinates: [activity.long, activity.lat],
+                    description: activity.description,
+                    day: `Day ${dayOfTrip}`,
+                    time: activity.time,
+                    date: activity.day
+                };
             });
-            
-            map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
-            
-            // Add sky layer
-            map.addLayer({
-                'id': 'sky',
-                'type': 'sky',
-                'paint': {
-                    'sky-type': 'atmosphere',
-                    'sky-atmosphere-sun': [0.0, 0.0],
-                    'sky-atmosphere-sun-intensity': 15
-                }
+
+            // Initialize map
+            const map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/satellite-v9',
+                center: [19.95, 39.75], // Center between Corfu and Sarande
+                zoom: 9.5,
+                pitch: 45,
+                bearing: 0,
+                antialias: true
             });
+
+            // Make map accessible globally for testing
+            window.map = map;
 
             // Initialize Threebox
-            tb = window.Threebox(
-                map,
-                map.getCanvas().getContext('webgl'),
-                {
-                    defaultLights: true
-                }
-            );
-
-            // Add 3D markers for each destination
-            map.addLayer({
-                id: 'custom-3d-layer',
-                type: 'custom',
-                renderingMode: '3d',
-                onAdd: function (map, mbxContext) {
-                    destinations.forEach((dest, index) => {
-                        // Create 3D marker
-                        const scale = 0.5;
-                        const geometry = new THREE.ConeGeometry(5000, 15000, 8);
-                        const material = new THREE.MeshPhongMaterial({ 
-                            color: 0x3498db,
-                            emissive: 0x2980b9,
-                            emissiveIntensity: 0.3
-                        });
-                        
-                        const cone = new THREE.Mesh(geometry, material);
-                        cone.rotation.x = Math.PI;
-                        
-                        const marker = tb.Object3D({
-                            obj: cone,
-                            units: 'meters',
-                            anchor: 'bottom'
-                        });
-                        
-                        marker.setCoords([dest.coordinates[0], dest.coordinates[1]]);
-                        tb.add(marker);
-                    });
-                },
-                
-                render: function (gl, matrix) {
-                    tb.update();
-                }
-            });
-        });
-
-        // Create destination list in sidebar
-        function createDestinationList() {
-            const container = document.getElementById('destinations');
+            let tb;
             
-            destinations.forEach((dest, index) => {
-                const div = document.createElement('div');
-                div.className = 'destination';
-                div.innerHTML = `
-                    <h3>${index + 1}. ${dest.name}</h3>
-                    <p>${dest.country} - ${dest.description}</p>
-                `;
+            map.on('load', function () {
+                // Add 3D terrain
+                map.addSource('mapbox-dem', {
+                    'type': 'raster-dem',
+                    'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
+                    'tileSize': 512,
+                    'maxzoom': 14
+                });
                 
-                div.addEventListener('click', () => flyToDestination(dest));
-                container.appendChild(div);
-            });
-        }
+                map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
+                
+                // Add sky layer
+                map.addLayer({
+                    'id': 'sky',
+                    'type': 'sky',
+                    'paint': {
+                        'sky-type': 'atmosphere',
+                        'sky-atmosphere-sun': [0.0, 0.0],
+                        'sky-atmosphere-sun-intensity': 15
+                    }
+                });
 
-        // Fly to destination function
-        function flyToDestination(destination) {
-            map.flyTo({
-                center: destination.coordinates,
-                zoom: 12,
-                pitch: 60,
-                bearing: Math.random() * 360,
-                duration: 3000,
-                essential: true
+                // Initialize Threebox
+                tb = window.Threebox(
+                    map,
+                    map.getCanvas().getContext('webgl'),
+                    {
+                        defaultLights: true
+                    }
+                );
+
+                // Add 3D markers for each destination
+                map.addLayer({
+                    id: 'custom-3d-layer',
+                    type: 'custom',
+                    renderingMode: '3d',
+                    onAdd: function (map, mbxContext) {
+                        destinations.forEach((dest, index) => {
+                            // Create 3D marker
+                            const scale = 0.5;
+                            const geometry = new THREE.ConeGeometry(5000, 15000, 8);
+                            const markerColor = dest.country === 'Greece' ? 0x0066cc : 0xe41e20;
+                            const emissiveColor = dest.country === 'Greece' ? 0x004499 : 0xcc1a1c;
+                            const material = new THREE.MeshPhongMaterial({ 
+                                color: markerColor,
+                                emissive: emissiveColor,
+                                emissiveIntensity: 0.3
+                            });
+                            
+                            const cone = new THREE.Mesh(geometry, material);
+                            cone.rotation.x = Math.PI;
+                            
+                            const marker = tb.Object3D({
+                                obj: cone,
+                                units: 'meters',
+                                anchor: 'bottom'
+                            });
+                            
+                            marker.setCoords([dest.coordinates[0], dest.coordinates[1]]);
+                            tb.add(marker);
+                        });
+                    },
+                    
+                    render: function (gl, matrix) {
+                        tb.update();
+                    }
+                });
             });
 
-            // Show popup
-            setTimeout(() => {
-                new mapboxgl.Popup()
-                    .setLngLat(destination.coordinates)
-                    .setHTML(`
-                        <h3>${destination.name}</h3>
-                        <p>${destination.country}</p>
-                        <p><em>${destination.description}</em></p>
-                    `)
+            // Current active destination index
+            let currentDestinationIndex = 0;
+
+            // Create destination list in sidebar
+            function createDestinationList() {
+                const container = document.getElementById('destinations');
+                
+                destinations.forEach((dest, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'destination';
+                    div.dataset.index = index;
+                    div.dataset.country = dest.country;
+                    
+                    div.innerHTML = `
+                        <div class="destination-header">
+                            <h3>${dest.name}</h3>
+                            <p class="country">${dest.country} • ${dest.day} • ${dest.time}</p>
+                        </div>
+                        <div class="description">${dest.description}</div>
+                        <div class="navigation">
+                            <button class="nav-button" onclick="navigateDestination(-1)" ${index === 0 ? 'disabled' : ''}>Previous</button>
+                            <span class="nav-info">${index + 1} of ${destinations.length}</span>
+                            <button class="nav-button" onclick="navigateDestination(1)" ${index === destinations.length - 1 ? 'disabled' : ''}>Next</button>
+                        </div>
+                    `;
+                    
+                    div.addEventListener('click', (e) => {
+                        // Don't trigger if clicking on navigation buttons
+                        if (!e.target.classList.contains('nav-button')) {
+                            setActiveDestination(index);
+                        }
+                    });
+                    container.appendChild(div);
+                });
+                
+                // Set initial active destination
+                updateDestinationDisplay();
+            }
+
+            // Navigate to previous/next destination
+            window.navigateDestination = function(direction) {
+                const newIndex = currentDestinationIndex + direction;
+                if (newIndex >= 0 && newIndex < destinations.length) {
+                    setActiveDestination(newIndex);
+                }
+            }
+
+            // Set active destination
+            function setActiveDestination(index) {
+                currentDestinationIndex = index;
+                updateDestinationDisplay();
+                flyToDestination(destinations[index]);
+            }
+
+            // Update the display of destinations
+            function updateDestinationDisplay() {
+                const allDestinations = document.querySelectorAll('.destination');
+                
+                allDestinations.forEach((dest, index) => {
+                    dest.classList.remove('active', 'previous', 'next', 'hidden');
+                    
+                    if (index === currentDestinationIndex) {
+                        dest.classList.add('active');
+                        // Update navigation buttons
+                        const prevBtn = dest.querySelector('.navigation button:first-child');
+                        const nextBtn = dest.querySelector('.navigation button:last-child');
+                        prevBtn.disabled = index === 0;
+                        nextBtn.disabled = index === destinations.length - 1;
+                    } else if (index === currentDestinationIndex - 1) {
+                        dest.classList.add('previous');
+                    } else if (index === currentDestinationIndex + 1) {
+                        dest.classList.add('next');
+                    } else {
+                        dest.classList.add('hidden');
+                    }
+                });
+            }
+
+            // Fly to destination function
+            function flyToDestination(destination) {
+                map.flyTo({
+                    center: destination.coordinates,
+                    zoom: 14,
+                    pitch: 60,
+                    bearing: Math.random() * 360,
+                    duration: 3000,
+                    essential: true
+                });
+
+                // Show popup
+                setTimeout(() => {
+                    new mapboxgl.Popup()
+                        .setLngLat(destination.coordinates)
+                        .setHTML(`
+                            <h3>${destination.name}</h3>
+                            <p>${destination.country} • ${destination.day}</p>
+                            <p>${destination.time}</p>
+                            <p><em>${destination.description}</em></p>
+                        `)
+                        .addTo(map);
+                }, 3000);
+            }
+
+            // Add navigation controls
+            map.addControl(new mapboxgl.NavigationControl());
+            map.addControl(new mapboxgl.FullscreenControl());
+
+            // Create the destination list immediately
+            createDestinationList();
+
+            // Add markers for each destination
+            destinations.forEach((dest, index) => {
+                const el = document.createElement('div');
+                el.style.width = '30px';
+                el.style.height = '30px';
+                el.style.backgroundColor = dest.country === 'Greece' ? '#0066cc' : '#e41e20';
+                el.style.borderRadius = '50%';
+                el.style.border = '3px solid white';
+                el.style.cursor = 'pointer';
+                el.style.boxShadow = '0 2px 5px rgba(0,0,0,0.3)';
+
+                new mapboxgl.Marker(el)
+                    .setLngLat(dest.coordinates)
                     .addTo(map);
-            }, 3000);
+
+                el.addEventListener('click', () => setActiveDestination(index));
+            });
         }
-
-        // Add navigation controls
-        map.addControl(new mapboxgl.NavigationControl());
-        map.addControl(new mapboxgl.FullscreenControl());
-
-        // Create the destination list immediately
-        createDestinationList();
-
-        // Add markers for each destination
-        destinations.forEach(dest => {
-            const el = document.createElement('div');
-            el.style.width = '30px';
-            el.style.height = '30px';
-            el.style.backgroundColor = '#3498db';
-            el.style.borderRadius = '50%';
-            el.style.border = '3px solid white';
-            el.style.cursor = 'pointer';
-            el.style.boxShadow = '0 2px 5px rgba(0,0,0,0.3)';
-
-            new mapboxgl.Marker(el)
-                .setLngLat(dest.coordinates)
-                .addTo(map);
-
-            el.addEventListener('click', () => flyToDestination(dest));
-        });
     </script>
 </body>
 </html>
