@@ -60,23 +60,27 @@
             padding: 20px;
             border-radius: 12px;
             cursor: pointer;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             border: 2px solid transparent;
             opacity: 0.3;
-            transform: scale(0.8);
+            transform: scale(0.8) translateZ(0);
             top: 110%;
+            will-change: transform, opacity, top;
         }
 
         .destination.previous {
             top: -15%;
             opacity: 0.3;
-            transform: scale(0.8);
+            transform: scale(0.8) translateZ(0);
             filter: grayscale(50%);
         }
 
         .destination.active {
             top: 50%;
-            transform: translateY(-50%) scale(0.9);
+            transform: translateY(-50%) scale(0.9) translateZ(0);
             opacity: 1;
             background: #34495e;
             border-color: #3498db;
@@ -88,13 +92,12 @@
         }
         
         .destination.active:hover {
-            transform: translateY(-50%) scale(0.92);
+            transform: translateY(-50%) scale(0.92) translateZ(0);
             box-shadow: 0 10px 30px rgba(0,0,0,0.4);
         }
         
         .destination.active .google-maps-hint {
             opacity: 0.7 !important;
-            transition: opacity 0.3s ease;
         }
         
         .destination.active:hover .google-maps-hint {
@@ -121,15 +124,16 @@
         .destination.next {
             top: 85%;
             opacity: 0.3;
-            transform: scale(0.8);
+            transform: scale(0.8) translateZ(0);
             filter: grayscale(50%);
         }
 
         .destination.hidden {
             opacity: 0;
-            transform: scale(0.7);
+            transform: scale(0.7) translateZ(0);
             pointer-events: none;
             top: 110%;
+            transition: opacity 0s;
         }
 
         .destination-header {
@@ -243,16 +247,296 @@
         // Mapbox access token
         mapboxgl.accessToken = 'pk.eyJ1Ijoidm1ha3NpbW92c2tpIiwiYSI6ImNtYmNwZzlkNDExNW0ybm9sODd4eXVzZTEifQ.uLOwTgP6Z_3OvlOrGKJt3Q';
 
-        fetch('./data/trip_coordinates.json')
-            .then(response => response.json())
-            .then(data => {
-                initializeMap(data.activities);
-            })
-            .catch(error => {
-                console.error('Error loading trip data:', error);
-                // Initialize with empty array if file can't be loaded
-                initializeMap([]);
-            });
+        initializeMap([
+            {
+                "day": "2025-06-05",
+                "time": "9:00AM",
+                "lat": 39.6250,
+                "long": 19.9250,
+                "title": "Arrive at the Corfu Ferry Port",
+                "description": "Begin your Mediterranean adventure arriving at Corfu's ferry terminal"
+            },
+            {
+                "day": "2025-06-05",
+                "time": "12:30PM",
+                "lat": 39.6243,
+                "long": 19.9217,
+                "title": "Lunch at Mikro Cafe",
+                "description": "Light lunch with perfect terrace overlooking Old Town's stepped streets"
+            },
+            {
+                "day": "2025-06-05",
+                "time": "2:00PM",
+                "lat": 39.6242,
+                "long": 19.9220,
+                "title": "Explore UNESCO Corfu Old Town",
+                "description": "Wander through Venetian alleys, visit Liston arcade, and browse artisan shops"
+            },
+            {
+                "day": "2025-06-05",
+                "time": "6:30PM",
+                "lat": 39.6236,
+                "long": 19.9294,
+                "title": "Old Fortress (Palaio Frourio) Sunset",
+                "description": "Golden hour walk and climb for panoramic sunset views over Corfu"
+            },
+            {
+                "day": "2025-06-05",
+                "time": "8:30PM",
+                "lat": 39.6265,
+                "long": 19.9205,
+                "title": "Dinner at Salto Wine Bar & Bistro",
+                "description": "Romantic dinner with fresh octopus carpaccio in converted Venetian mansion"
+            },
+            {
+                "day": "2025-06-06",
+                "time": "10:30AM",
+                "lat": 39.5575,
+                "long": 19.9025,
+                "title": "Achilleion Palace Visit",
+                "description": "Tour Empress Sisi's stunning summer palace with gardens and terrace views"
+            },
+            {
+                "day": "2025-06-06",
+                "time": "2:00PM",
+                "lat": 39.4534,
+                "long": 20.0025,
+                "title": "Lunch at Limnopoula Fish Taverna",
+                "description": "Legendary fresh grilled fish at Corfu's best-rated seafood restaurant in Petriti"
+            },
+            {
+                "day": "2025-06-06",
+                "time": "5:30PM",
+                "lat": 39.68775444873469,
+                "long": 19.74052667844296,
+                "title": "Doukades Village Visit",
+                "description": "Experience authentic mountain village life with coffee at the village square"
+            },
+            {
+                "day": "2025-06-06",
+                "time": "8:30PM",
+                "lat": 39.518297,
+                "long": 19.9212267,
+                "title": "Dinner at Taverna Ninos",
+                "description": "Authentic local dining with famous pastitsada where Corfiots eat"
+            },
+            {
+                "day": "2025-06-07",
+                "time": "10:30AM",
+                "lat": 39.66955831971878,
+                "long": 19.701728213044873,
+                "title": "Paleokastritsa Monastery",
+                "description": "Visit 13th-century monastery with beautiful gardens and icon museum"
+            },
+            {
+                "day": "2025-06-07",
+                "time": "12:00PM",
+                "lat": 39.67219640040307,
+                "long": 19.70325926065345,
+                "title": "Beach Time at Paleokastritsa",
+                "description": "Swim in crystal-clear turquoise waters at main beach with sunbed rental"
+            },
+            {
+                "day": "2025-06-07",
+                "time": "1:30PM",
+                "lat": 39.6650,
+                "long": 19.6983,
+                "title": "Lunch at Dolphin Taverna",
+                "description": "Family-run taverna with jaw-dropping bay views, fresh calamari and moussaka"
+            },
+            {
+                "day": "2025-06-07",
+                "time": "3:00PM",
+                "lat": 39.67081887842845,
+                "long": 19.702528742911944,
+                "title": "Boat Trip to Sea Caves",
+                "description": "Explore hidden caves and swim in secluded coves around Paleokastritsa"
+            },
+            {
+                "day": "2025-06-07",
+                "time": "7:45PM",
+                "lat": 39.78763641956003,
+                "long": 19.667250740775323,
+                "title": "Sunset at 7th Heaven Cafe",
+                "description": "Best sunset spot in Corfu with cocktails on cliff-edge terrace at Loggas Beach"
+            },
+            {
+                "day": "2025-06-08",
+                "time": "8:30AM",
+                "lat": 39.71528120678032,
+                "long": 19.658063358255063,
+                "title": "Hike to Porto Timoni Beach",
+                "description": "45-minute scenic hike to Corfu's most photographed double bay beach"
+            },
+            {
+                "day": "2025-06-08",
+                "time": "10:00AM",
+                "lat": 39.7150,
+                "long": 19.6575,
+                "title": "Swim at Porto Timoni",
+                "description": "Relax and snorkel at the stunning twin bays with picnic lunch"
+            },
+            {
+                "day": "2025-06-08",
+                "time": "1:00PM",
+                "lat": 39.7959293,
+                "long": 19.6729477,
+                "title": "Cape Drastis Visit",
+                "description": "Dramatic white cliffs meeting turquoise sea - perfect for photos"
+            },
+            {
+                "day": "2025-06-08",
+                "time": "4:30PM",
+                "lat": 39.7960278,
+                "long": 19.6998333,
+                "title": "Canal d'Amour Swimming",
+                "description": "Swim through Channel of Love's unique sandstone formations"
+            },
+            {
+                "day": "2025-06-08",
+                "time": "8:00PM",
+                "lat": 39.7935834107572,
+                "long": 19.740271298888224,
+                "title": "Dinner at Yialos Restaurant",
+                "description": "Romantic beachfront dining with fresh fish platter and sunset views"
+            },
+            {
+                "day": "2025-06-09",
+                "time": "10:30AM",
+                "lat": 39.736848399274315,
+                "long": 19.929099295773543,
+                "title": "Agni Bay Arrival",
+                "description": "Visit one of Corfu's most exclusive spots with crystal-clear waters"
+            },
+            {
+                "day": "2025-06-09",
+                "time": "1:00PM",
+                "lat": 39.73617959333126,
+                "long": 19.929307392585464,
+                "title": "Lunch at Toula's Taverna",
+                "description": "Splurge on impeccable seafood where luxury yacht owners dine"
+            },
+            {
+                "day": "2025-06-09",
+                "time": "3:00PM",
+                "lat": 39.78847798486937,
+                "long": 19.921620740030395,
+                "title": "Kassiopi Village Exploration",
+                "description": "Explore charming fishing village and castle ruins with secret beach pathway"
+            },
+            {
+                "day": "2025-06-10",
+                "time": "8:30AM",
+                "lat": 39.6250,
+                "long": 19.9250,
+                "title": "Corfu Port Ferry Terminal",
+                "description": "Check-in for ferry journey to Albania"
+            },
+            {
+                "day": "2025-06-10",
+                "time": "9:30AM",
+                "lat": 39.7482,
+                "long": 19.9592,
+                "title": "Ferry Departure to Sarandë",
+                "description": "30-minute scenic ferry crossing with beautiful coastal views"
+            },
+            {
+                "day": "2025-06-10",
+                "time": "10:00AM",
+                "lat": 39.8714,
+                "long": 20.0034,
+                "title": "Arrive Sarandë Ferry Terminal",
+                "description": "Welcome to Albania - exchange euros and begin Albanian Riviera adventure"
+            },
+            {
+                "day": "2025-06-10",
+                "time": "12:30PM",
+                "lat": 39.8750,
+                "long": 20.0050,
+                "title": "Lunch at Te Bequa",
+                "description": "Authentic Albanian cuisine with tavë kosi lamb dish where locals eat"
+            },
+            {
+                "day": "2025-06-10",
+                "time": "2:00PM",
+                "lat": 39.8756,
+                "long": 20.0053,
+                "title": "Sarandë Waterfront Promenade",
+                "description": "Explore palm-lined seaside walk and visit old synagogue ruins"
+            },
+            {
+                "day": "2025-06-10",
+                "time": "6:00PM",
+                "lat": 39.8659,
+                "long": 20.0256,
+                "title": "Lëkurës Castle Sunset",
+                "description": "Drive to hilltop castle for panoramic views over Sarandë Bay"
+            },
+            {
+                "day": "2025-06-10",
+                "time": "7:30PM",
+                "lat": 39.8659,
+                "long": 20.0256,
+                "title": "Dinner at Natyra Restaurant",
+                "description": "Mixed grill platter with Albanian wine at castle restaurant with views"
+            },
+            {
+                "day": "2025-06-11",
+                "time": "9:00AM",
+                "lat": 39.7450,
+                "long": 20.0200,
+                "title": "Butrint UNESCO World Heritage Site",
+                "description": "Explore 2,500 years of history including Roman theatre and Byzantine mosaics"
+            },
+            {
+                "day": "2025-06-11",
+                "time": "2:00PM",
+                "lat": 39.7689,
+                "long": 19.9997,
+                "title": "Paradise at Ksamil Beach",
+                "description": "Caribbean-like turquoise waters, swim to small islands nearby"
+            },
+            {
+                "day": "2025-06-11",
+                "time": "7:30PM",
+                "lat": 39.8750,
+                "long": 20.0050,
+                "title": "Dinner at Haxhi Restaurant",
+                "description": "Famous pink pasta with shrimp and grilled octopus at family-owned spot"
+            },
+            {
+                "day": "2025-06-12",
+                "time": "9:00AM",
+                "lat": 39.8750,
+                "long": 20.0050,
+                "title": "Rei dos Mares Boat Tour",
+                "description": "Full day exploring hidden beaches with onboard BBQ lunch and wine"
+            },
+            {
+                "day": "2025-06-12",
+                "time": "5:00PM",
+                "lat": 39.8750,
+                "long": 20.0050,
+                "title": "Final Dinner at Meat House",
+                "description": "Beachfront dining with fresh catch of the day before ferry departure"
+            },
+            {
+                "day": "2025-06-12",
+                "time": "8:00PM",
+                "lat": 40.880702928932244,
+                "long": 20.926371669507756,
+                "title": "Evening Bus to Macedonia",
+                "description": "Return bus as the sun sets"
+            },
+            {
+                "day": "2025-06-13",
+                "time": "9:00AM",
+                "lat": 41.7566117,
+                "long": 22.1918286,
+                "title": "Shtip",
+                "description": "End Mediterranean adventure in historic Macedonian city"
+            }
+        ]);
 
         // Main initialization function
         function initializeMap(tripActivities) {
@@ -480,6 +764,7 @@
                 const startScreen = document.querySelector('.start-screen');
                 
                 allDestinations.forEach((dest, index) => {
+                    const wasHidden = dest.classList.contains('hidden');
                     dest.classList.remove('active', 'previous', 'next', 'hidden');
                     
                     // Handle start screen
@@ -507,7 +792,16 @@
                     } else if (destIndex === currentDestinationIndex + 1) {
                         dest.classList.add('next');
                     } else {
-                        dest.classList.add('hidden');
+                        // If it was already hidden, instantly hide it to prevent ghost effect
+                        if (wasHidden) {
+                            dest.style.transition = 'none';
+                            dest.classList.add('hidden');
+                            // Force reflow
+                            dest.offsetHeight;
+                            dest.style.transition = '';
+                        } else {
+                            dest.classList.add('hidden');
+                        }
                     }
                 });
             }
