@@ -1,15 +1,14 @@
 {
-  "name": "balkans-3d-map-tests",
+  "name": "corfu-trip",
   "version": "1.0.0",
-  "description": "Playwright tests for 3D Interactive Balkans Map",
+  "description": "Interactive map for Corfu & Sarandë trip itinerary",
+  "main": "index.html",
   "scripts": {
     "test": "playwright test",
-    "test:headed": "playwright test --headed",
-    "test:debug": "playwright test --debug",
-    "test:report": "playwright show-report"
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed"
   },
   "devDependencies": {
-    "@playwright/test": "^1.40.0",
-    "http-server": "^14.1.1"
+    "@playwright/test": "^1.40.0"
   }
 }
