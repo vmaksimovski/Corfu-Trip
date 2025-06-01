@@ -2,4 +2,4 @@
 *.png
 node_modules/
 test-results/*
-playwright-report/data/
+playwright-report/

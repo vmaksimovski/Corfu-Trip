@@ -41,7 +41,7 @@ test.describe('Page Loading and Initial State', () => {
     await expect(page.locator('#map canvas.mapboxgl-canvas')).toBeVisible();
     
     // Check if map controls are present
-    await expect(page.locator('.mapboxgl-ctrl-group')).toBeVisible();
+    await expect(page.locator('.mapboxgl-ctrl-group').first()).toBeVisible();
   });
 
   test('should load external dependencies', async ({ page }) => {
